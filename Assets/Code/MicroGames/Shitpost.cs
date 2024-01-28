@@ -13,15 +13,15 @@ public class Shitpost : MicroGame {
     [SerializeField] private Image replyFrame;
 
     private string _reply;
-    private int replyIndex = 0;
+    private int _replyIndex = 0;
 
-    private readonly string[] originalPosts = {
+    private readonly string[] _originalPosts = {
         "Last of us was mid",
         "I like turtles",
         "IATAH for wanting to leave my family?"
     };
 
-    private string[] shitPosts = {
+    private readonly string[] _shitPosts = {
         "What the fuck did you just fucking say about me, you little bitch? I’ll have you know I graduated top of my " +
         "class in the Navy Seals, and I’ve been involved in numerous secret raids on Al-Quaeda, and I have over " +
         "300 confirmed kills.",
@@ -37,9 +37,9 @@ public class Shitpost : MicroGame {
         keyboard.gameObject.SetActive(false);
         replyFrame.gameObject.SetActive(false);
         Random random = new();
-        postText.text = originalPosts[random.Next(0, originalPosts.Length)];
+        postText.text = _originalPosts[random.Next(0, _originalPosts.Length)];
         replyText.text = "";
-        _reply = shitPosts[random.Next(0, shitPosts.Length)];
+        _reply = _shitPosts[random.Next(0, _shitPosts.Length)];
     }
 
     public void Reply() {
@@ -48,8 +48,8 @@ public class Shitpost : MicroGame {
     }
 
     public void Autocomplete() {
-        replyText.text = string.Join(" ", _reply.Split(" ").Take(++replyIndex));
-        if (replyIndex > 10) {
+        replyText.text = string.Join(" ", _reply.Split(" ").Take(++_replyIndex));
+        if (_replyIndex > 10) {
             GameManager.Instance.FinishMicroGame(true);
         }
     }
