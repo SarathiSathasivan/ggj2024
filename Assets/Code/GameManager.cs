@@ -24,6 +24,8 @@ public class GameManager : StaticInstance<GameManager> {
 
     [SerializeField] private Canvas canvas;
     [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioClip progressSound, successSound, failSound, levelUpSound, gameOverSound;
 
     [SerializeField] private GameObject[] microGames;
     [SerializeField] private string[] hints;
@@ -42,6 +44,7 @@ public class GameManager : StaticInstance<GameManager> {
     private int _life = 3;
 
     private float _speed = 1.0f;
+
     public GameState state;
     public event Action OnTick;
 
@@ -84,9 +87,11 @@ public class GameManager : StaticInstance<GameManager> {
             SetLife(_life - 1);
         }
         if (_life == 0) {
-            GameOver();
+            SetState(GameState.GameOver);
             return;
         }
+
+        PlayAudioClip(success ? successSound : failSound);
         _timer = TimerMax;
         SetScoreAndLevel(success? _score + 10 : _score, _gamesFinished + 1);
         SetState(GameState.Home);
@@ -107,7 +112,15 @@ public class GameManager : StaticInstance<GameManager> {
         _speed = 1.0f + (newLevel - 1) * .2f;
         musicSource.pitch = _speed;
         SetLife(_life + 1);
+        PlayAudioClip(levelUpSound);
     }
+
+    private void PlayAudioClip(AudioClip clip) {
+        sfxSource.clip = clip;
+        sfxSource.Play();
+    }
+
+    public void PlayProgressSound() => PlayAudioClip(progressSound);
 
     private void SetLife(int life) {
         _life = Math.Clamp(life, 0, 3);
@@ -117,10 +130,6 @@ public class GameManager : StaticInstance<GameManager> {
             1 => batteryLow,
             _ => batteryEmpty
         };
-    }
-
-    private void GameOver() {
-        SetState(GameState.GameOver);
     }
 
     private void SetState(GameState newState) {
@@ -140,6 +149,7 @@ public class GameManager : StaticInstance<GameManager> {
             case GameState.GameOver:
                 home.SetActive(true);
                 gameOver.gameObject.SetActive(true);
+                PlayAudioClip(gameOverSound);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);

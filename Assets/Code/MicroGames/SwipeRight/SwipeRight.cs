@@ -19,6 +19,7 @@ public class SwipeRight : MicroGame {
             GameManager.Instance.FinishMicroGame(false);
         } else {
             NextCard();
+            GameManager.Instance.PlayProgressSound();
         }
     }
 
@@ -27,6 +28,7 @@ public class SwipeRight : MicroGame {
             GameManager.Instance.FinishMicroGame(false);
         } else {
             NextCard();
+            GameManager.Instance.PlayProgressSound();
         }
     }
 

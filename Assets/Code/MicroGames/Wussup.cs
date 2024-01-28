@@ -41,6 +41,7 @@ public class Wussup : MicroGame {
     public void NextKey() {
         if (_responseIndex > 0) {
             replyText.text += _response[_responseIndex - 1];
+            GameManager.Instance.PlayProgressSound();
         }
         if (_responseIndex < _response.Length) {
             key.position = keyPositions[keys.IndexOf(_response[_responseIndex++])].position;

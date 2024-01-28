@@ -47,6 +47,8 @@ public class Doomscroll : MicroGame, IDragHandler {
         parentTransform.position = new Vector3(position.x, position.y + eventData.delta.y, position.z);
         if (parentTransform.position.y - _parentTransformInitialY > Padding * 7) {
             GameManager.Instance.FinishMicroGame(true);
+        } else {
+            GameManager.Instance.PlayProgressSound();
         }
     }
 }

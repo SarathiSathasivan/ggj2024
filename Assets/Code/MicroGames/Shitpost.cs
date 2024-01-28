@@ -45,12 +45,15 @@ public class Shitpost : MicroGame {
     public void Reply() {
         keyboard.gameObject.SetActive(true);
         replyFrame.gameObject.SetActive(true);
+        GameManager.Instance.PlayProgressSound();
     }
 
     public void Autocomplete() {
         replyText.text = string.Join(" ", _reply.Split(" ").Take(++_replyIndex));
         if (_replyIndex > 10) {
             GameManager.Instance.FinishMicroGame(true);
+        } else {
+            GameManager.Instance.PlayProgressSound();
         }
     }
 }
