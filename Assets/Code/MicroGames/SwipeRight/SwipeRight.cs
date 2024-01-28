@@ -39,7 +39,7 @@ public class SwipeRight : MicroGame {
         if (_currentCard) {
             Destroy(_currentCard);
         }
-        Random random = new Random();
+        Random random = new();
         int index = random.Next(0, _deck.Count);
         _currentCard = Instantiate(_deck[index], transform);
         _deck.RemoveAt(index);

@@ -67,9 +67,9 @@ public class GameManager : StaticInstance<GameManager> {
     private GameObject GetRandomMicroGame() {
         Random random = new Random();
         int index = 0;
-        // do {
-        //     index = random.Next(0, microGames.Length);
-        // } while (microGames[index] == _currentMicroGamePrefab);
+        do {
+            index = random.Next(0, microGames.Length);
+        } while (microGames[index] == _currentMicroGamePrefab);
         _currentMicroGamePrefab = microGames[index];
         return Instantiate(_currentMicroGamePrefab,  canvas.transform);
     }
