@@ -27,7 +27,7 @@ public class GameManager : StaticInstance<GameManager> {
     private GameObject _currentMicroGame;
     private GameObject _currentMicroGamePrefab;
 
-    private const float TimerMax = 3.0f;
+    private const float TimerMax = 5.0f;
 
     private int _score = 0;
     private int _highScore;
@@ -78,7 +78,17 @@ public class GameManager : StaticInstance<GameManager> {
             GameOver();
             return;
         }
+        _timer = TimerMax;
+        UpdateScoreAndLevel(success);
         SetState(GameState.Home);
+    }
+
+    private void UpdateScoreAndLevel(bool success) {
+        _score += success ? 100 : 000;
+        _highScore = Math.Max(_score, _highScore);
+        score.text = $"Score: {_score}";
+        highScore.text = $"High Score: {_highScore}";
+        // TODO level
     }
 
     private void SetLife(int life) {

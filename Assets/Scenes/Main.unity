@@ -1074,7 +1074,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 16
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -1680,7 +1680,7 @@ MonoBehaviour:
   batteryEmpty: {fileID: 21300000, guid: 9b710236eb79b4d70831b7f4fc005d39, type: 3}
   canvas: {fileID: 1907049599}
   microGames:
-  - {fileID: 7634196491521287556, guid: de66b3db8f107457592a4405d5e2a9ad, type: 3}
+  - {fileID: 1897590473940624423, guid: de66b3db8f107457592a4405d5e2a9ad, type: 3}
   state: 0
 --- !u!4 &1934061788
 Transform:
