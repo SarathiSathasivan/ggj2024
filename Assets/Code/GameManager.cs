@@ -12,6 +12,7 @@ public class GameManager : StaticInstance<GameManager> {
     [SerializeField] private TMP_Text score;
     [SerializeField] private TMP_Text highScore;
     [SerializeField] private TMP_Text timer;
+    [SerializeField] private TMP_Text level;
     [SerializeField] private GameObject gameOver;
     [SerializeField] private GameObject home;
 
@@ -22,14 +23,17 @@ public class GameManager : StaticInstance<GameManager> {
     [SerializeField] private Sprite batteryEmpty;
 
     [SerializeField] private Canvas canvas;
+    [SerializeField] private AudioSource _musicSource;
 
     [SerializeField] private GameObject[] microGames;
     private GameObject _currentMicroGame;
     private GameObject _currentMicroGamePrefab;
 
     private const float TimerMax = 5.0f;
+    private const float LevelUpCount = 5.0f;
 
     private int _score = 0;
+    private int _gamesFinished = 0;
     private int _highScore;
     private float _timer = TimerMax;
     private int _life = 3;
@@ -49,6 +53,7 @@ public class GameManager : StaticInstance<GameManager> {
         _score = 0;
         _timer = TimerMax;
         SetLife(3);
+        SetScoreAndLevel(0, 0);
         SetState(GameState.Home);
     }
 
@@ -79,16 +84,25 @@ public class GameManager : StaticInstance<GameManager> {
             return;
         }
         _timer = TimerMax;
-        UpdateScoreAndLevel(success);
+        SetScoreAndLevel(success? _score + 100 : _score, _gamesFinished + 1);
         SetState(GameState.Home);
     }
 
-    private void UpdateScoreAndLevel(bool success) {
-        _score += success ? 100 : 000;
+    private void SetScoreAndLevel(int newScore, int gamesFinished) {
+        _score = newScore;
         _highScore = Math.Max(_score, _highScore);
         score.text = $"Score: {_score}";
         highScore.text = $"High Score: {_highScore}";
-        // TODO level
+
+        int oldLevel = Mathf.FloorToInt(_gamesFinished / LevelUpCount) + 1;
+        _gamesFinished = gamesFinished;
+        int newLevel = Mathf.FloorToInt(_gamesFinished / LevelUpCount) + 1;
+        if (oldLevel == newLevel) return;
+
+        level.text = $"Level {newLevel}";
+        _speed = 1.0f + (newLevel - 1) * .2f;
+        _musicSource.pitch = _speed;
+        SetLife(_life + 1);
     }
 
     private void SetLife(int life) {
