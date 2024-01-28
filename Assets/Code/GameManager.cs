@@ -34,7 +34,7 @@ public class GameManager : StaticInstance<GameManager> {
     private GameObject _currentMicroGame;
     private GameObject _currentMicroGamePrefab;
 
-    private const float TimerMax = 6.0f;
+    private const float TimerMax = 5.0f;
     private const float LevelUpCount = 5.0f;
 
     private int _score = 0;
@@ -150,6 +150,7 @@ public class GameManager : StaticInstance<GameManager> {
                 home.SetActive(true);
                 gameOver.gameObject.SetActive(true);
                 PlayAudioClip(gameOverSound);
+                musicSource.pitch = 1.0f;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
