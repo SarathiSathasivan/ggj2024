@@ -23,13 +23,16 @@ public class GameManager : StaticInstance<GameManager> {
     [SerializeField] private Sprite batteryEmpty;
 
     [SerializeField] private Canvas canvas;
-    [SerializeField] private AudioSource _musicSource;
+    [SerializeField] private AudioSource musicSource;
 
     [SerializeField] private GameObject[] microGames;
+    [SerializeField] private string[] hints;
+    [SerializeField] private TMP_Text hint;
+
     private GameObject _currentMicroGame;
     private GameObject _currentMicroGamePrefab;
 
-    private const float TimerMax = 5.0f;
+    private const float TimerMax = 6.0f;
     private const float LevelUpCount = 5.0f;
 
     private int _score = 0;
@@ -44,8 +47,8 @@ public class GameManager : StaticInstance<GameManager> {
 
     private void Start() {
         _highScore = PlayerPrefs.GetInt("HighScore", 0);
-        highScore.text = $"High Score: {_highScore}";
-        score.text = $"Score: {_score}";
+        highScore.text = $"High Score: {_highScore} minutes";
+        score.text = $"Screen Time: {_score} minutes";
         NewGame();
     }
 
@@ -71,6 +74,7 @@ public class GameManager : StaticInstance<GameManager> {
             index = random.Next(0, microGames.Length);
         } while (microGames[index] == _currentMicroGamePrefab);
         _currentMicroGamePrefab = microGames[index];
+        hint.text = hints[index] + " ->";
         return Instantiate(_currentMicroGamePrefab,  canvas.transform);
     }
     
@@ -84,15 +88,15 @@ public class GameManager : StaticInstance<GameManager> {
             return;
         }
         _timer = TimerMax;
-        SetScoreAndLevel(success? _score + 100 : _score, _gamesFinished + 1);
+        SetScoreAndLevel(success? _score + 10 : _score, _gamesFinished + 1);
         SetState(GameState.Home);
     }
 
     private void SetScoreAndLevel(int newScore, int gamesFinished) {
         _score = newScore;
         _highScore = Math.Max(_score, _highScore);
-        score.text = $"Score: {_score}";
-        highScore.text = $"High Score: {_highScore}";
+        score.text = $"Screen Time: {_score} minutes";
+        highScore.text = $"High Score: {_highScore} minutes";
 
         int oldLevel = Mathf.FloorToInt(_gamesFinished / LevelUpCount) + 1;
         _gamesFinished = gamesFinished;
@@ -101,7 +105,7 @@ public class GameManager : StaticInstance<GameManager> {
 
         level.text = $"Level {newLevel}";
         _speed = 1.0f + (newLevel - 1) * .2f;
-        _musicSource.pitch = _speed;
+        musicSource.pitch = _speed;
         SetLife(_life + 1);
     }
 
@@ -126,10 +130,12 @@ public class GameManager : StaticInstance<GameManager> {
                 break;
             case GameState.Home:
                 gameOver.gameObject.SetActive(false);
+                hint.gameObject.SetActive(false);
                 home.SetActive(true);
                 break;
             case GameState.MicroGame:
                 home.SetActive(false);
+                hint.gameObject.SetActive(true);
                 break;
             case GameState.GameOver:
                 home.SetActive(true);

@@ -17,7 +17,6 @@ public class Card : MonoBehaviour, IDragHandler, IEndDragHandler {
     }
 
     public void OnDrag(PointerEventData eventData) {
-        // Debug.Log(eventData.delta);
         transform.position += (Vector3) eventData.delta;
         switch (transform.position.x - _initialPosition.x) {
             case > 120:

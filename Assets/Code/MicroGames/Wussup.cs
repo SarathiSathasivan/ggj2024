@@ -25,7 +25,7 @@ public class Wussup : MicroGame {
     };
 
     private readonly string[] _responses = {
-        "k", "wow", "ok", "lol", "haha", "damn", "wild"
+        "k", "wow", "ok", "lol", "hah", "dam", "wld"
     };
 
     private void Start() {
